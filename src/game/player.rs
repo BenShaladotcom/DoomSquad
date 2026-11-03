@@ -1,6 +1,7 @@
 use super::map::Map;
 use crate::game::generate_entities::generate_entities;
 use crate::game::player::LastInputDirection::*;
+use crate::game::keybindings::{self, Action, KeyBindings};
 use crate::{
     SCREEN_HEIGHT,
     audio::audio_handler::Audio,
@@ -171,6 +172,7 @@ impl Player {
         map: &Map,
         renderer_data: &RendererData,
         audio: &mut Audio,
+        key_bindings: &KeyBindings,
     ) -> Vec<EntityEvent> {
         let mut events: Vec<EntityEvent> = Vec::new();
         //reseting keyinput idfk how to do it an other way
@@ -288,7 +290,7 @@ impl Player {
 
         let mut step_successful: bool = false;
 
-        if (window.is_key_down(Key::W)
+        if (window.is_key_down(key_bindings.key(Action::Forwards))
             && ((!self.is_sliding && !self.is_jumping) || self.last_input == W))
             || (self.is_jumping && (self.last_input == W))
         {
