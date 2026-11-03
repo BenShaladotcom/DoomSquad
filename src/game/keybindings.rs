@@ -33,7 +33,7 @@ pub struct KeyBindings {
 }
 
 impl KeyBindings {
-    pub fn default_bindings() -> self {
+    pub fn default_bindings() -> Self {
         let mut map = HashMap::new();
 
         map.insert(Action::Forwards, Key::W);
@@ -55,5 +55,12 @@ impl KeyBindings {
         map.insert(Action::FireArrow, Key::RightShift);
         map.insert(Action::EnterGodmode, Key::G);
         map.insert(Action::LockEnemies, Key::L);
+
+        KeyBindings { map }
     }
+
+pub fn key(&self, action: Action) -> Key {
+    self.map[&action]
+}
+
 }
