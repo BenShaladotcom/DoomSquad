@@ -20,7 +20,7 @@ use crate::{
     game::{map::Point, movement::Mover},
     render::RendererData,
 };
-use minifb::{Key, KeyRepeat, MouseButton, MouseMode, Window};
+use minifb::{KeyRepeat, MouseButton, MouseMode, Window};
 use std::f64::consts::PI;
 
 const ROTATION_SPEED_MOUSE: f64 = 2.0;
@@ -371,7 +371,7 @@ impl Player {
             audio.play_sfx("slide", 1.0);
             self.move_speed += 5.0;
             self.is_sliding = true;
-            self.save_input(window);
+            self.save_input(window,key_bindings);
         }
 
         //during slide speed decreases
@@ -444,7 +444,7 @@ impl Player {
                 self.rocketlauncher_cooldown = ROCKETLAUNCHER_COOLDOWN_TIME;
             }
 
-            self.save_input(window);
+            self.save_input(window,key_bindings);
         }
 
         //Rocketlauncher cooldwon
