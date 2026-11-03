@@ -12,6 +12,7 @@ use crate::render::{RendererData, render_init};
 use minifb::{Key, KeyRepeat, Window, WindowOptions};
 use std::f64::consts::PI;
 use std::time::Instant;
+use crate::game::keybindings::{self, Action, KeyBindings};
 
 const SCREEN_WIDTH: usize = 800;
 const SCREEN_HEIGHT: usize = 450;
@@ -55,6 +56,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         SURFACE_DEFAULT_COLOR,
     );
 
+    let mut key_bindings = KeyBindings::default_bindings();
     let mut game = game::Game::new_game(&renderer_data).unwrap();
     let mut audio = Audio::init();
     let mut menu = Menu::new();
