@@ -10,8 +10,8 @@ use std::fs;
 
 use crate::audio::audio_handler::Audio;
 use crate::game::gamestate::Game;
-use crate::render::RendererData;
 use crate::game::keybindings::{Action, KeyBindings};
+use crate::render::RendererData;
 
 const SCREEN_WIDTH: usize = 800;
 const SCREEN_HEIGHT: usize = 450;
@@ -125,10 +125,10 @@ impl Menu {
             h: 42,
             text: audio_text.to_string(),
         };
-        let btn_keys = ButtonDef{
+        let btn_keys = ButtonDef {
             x: 230,
-            y:305,
-            w:340,
+            y: 305,
+            w: 340,
             h: 42,
             text: "[4] KEY BINDINGS".to_string(),
         };
@@ -148,7 +148,7 @@ impl Menu {
             return AppState::Playing;
         }
 
-         if self.draw_flat_button(buffer, &btn_keys, mx, my) && clicked || click4 {
+        if self.draw_flat_button(buffer, &btn_keys, mx, my) && clicked || click4 {
             audio.set_muted(!audio.is_muted);
             return AppState::KeyBindingsMenu;
         }
@@ -309,16 +309,15 @@ impl Menu {
         }
 
         AppState::GamePaused
-   
     }
 
- pub fn update_and_draw_key_bindings(  
+    pub fn update_and_draw_key_bindings(
         &mut self,
         window: &mut Window,
         buffer: &mut [u32],
         key_bindings: &mut KeyBindings,
     ) -> AppState {
-       // Clear the buffer from the previous frame
+        // Clear the buffer from the previous frame
         buffer.fill(COL_BG_MAIN);
 
         // Render titles
@@ -332,10 +331,25 @@ impl Menu {
             COL_TITLE_RED,
         );
 
-                AppState::KeyBindingsMenu
-    }   
+        let (mx, my, clicked) = self.get_mouse_state(window);
 
-    
+        for i in 0..Action::ALL.len() {
+            let action = Action::ALL[i];
+            let col = i / 10;
+            let row = i % 10;
+            let text = format!("{:?}: {:?}",action, key_bindings.key(action) );
+            let btn = ButtonDef {
+                x: 20 + col * 390,
+                y: 90 + row * 34,
+                w: 370,
+                h: 28,
+                text,
+            };
+                self.draw_flat_button(buffer, &btn, mx, my);
+        }
+        AppState::KeyBindingsMenu
+    }
+
     /// Fetches mouse coordinates and performs edge detection (debouncing) for left-clicks.
     fn get_mouse_state(&mut self, window: &Window) -> (usize, usize, bool) {
         // Clamp prevents out-of-bounds coordinates if the mouse leaves the window frame

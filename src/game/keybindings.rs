@@ -28,6 +28,40 @@ pub enum Action  {
     LockEnemies  //locks all current Enemies
 }
 
+impl Action{
+  pub const ALL: [Action; 19] = [
+    Action::Forwards,
+    Action::Backwards,
+    Action::Crouch,
+    Action::EnterGodmode,
+    Action::ExitToMainMenu,
+    Action::FineAiming,
+    Action::FireArrow,
+    Action::FireBullet,
+    Action::Interact,
+    Action::Jump,
+    Action::Left,
+    Action::LockEnemies,
+    Action::MoveCrosshairDown,
+    Action::MoveCrosshairUp,
+    Action::Right,
+    Action::RocketJump,
+    Action::Sprint,
+    Action::TurnLeft,
+    Action::TurnRight,
+  ];
+
+}
+
+
+
+
+
+
+
+
+
+
 pub struct KeyBindings {
     pub map: HashMap<Action, Key>,
 }
