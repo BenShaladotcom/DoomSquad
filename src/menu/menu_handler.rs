@@ -49,12 +49,14 @@ struct ButtonDef {
 /// we only need to manually track the mouse state for edge detection (clicks).
 pub struct Menu {
     was_mouse_down: bool,
+    waiting_for: Option<Action>,
 }
 
 impl Menu {
     pub fn new() -> Self {
         Self {
             was_mouse_down: false,
+            waiting_for: None,
         }
     }
 
@@ -149,7 +151,6 @@ impl Menu {
         }
 
         if self.draw_flat_button(buffer, &btn_keys, mx, my) && clicked || click4 {
-            audio.set_muted(!audio.is_muted);
             return AppState::KeyBindingsMenu;
         }
 
@@ -337,7 +338,7 @@ impl Menu {
             let action = Action::ALL[i];
             let col = i / 10;
             let row = i % 10;
-            let text = format!("{:?}: {:?}",action, key_bindings.key(action) );
+            let text = format!("{:?}: {:?}", action, key_bindings.key(action));
             let btn = ButtonDef {
                 x: 20 + col * 390,
                 y: 90 + row * 34,
@@ -345,8 +346,19 @@ impl Menu {
                 h: 28,
                 text,
             };
-                self.draw_flat_button(buffer, &btn, mx, my);
+            if self.draw_flat_button(buffer, &btn, mx, my) && clicked {
+                self.waiting_for = Some(action);
+            }
         }
+
+        if let Some(action) = self.waiting_for {
+            let keys = window.get_keys_pressed(KeyRepeat::No);
+            if let Some(key) = keys.first() {
+                key_bindings.map.insert(action, *key);
+                self.waiting_for = None;
+            }
+        }
+
         AppState::KeyBindingsMenu
     }
 
