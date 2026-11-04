@@ -11,6 +11,7 @@ use std::fs;
 use crate::audio::audio_handler::Audio;
 use crate::game::gamestate::Game;
 use crate::render::RendererData;
+use crate::game::keybindings::{Action, KeyBindings};
 
 const SCREEN_WIDTH: usize = 800;
 const SCREEN_HEIGHT: usize = 450;
