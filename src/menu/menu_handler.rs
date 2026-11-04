@@ -100,16 +100,16 @@ impl Menu {
         // Define button layouts
         let btn_start = ButtonDef {
             x: 230,
-            y: 160,
+            y: 140,
             w: 340,
-            h: 50,
+            h: 42,
             text: "[1] NEW GAME".to_string(),
         };
         let btn_load = ButtonDef {
             x: 230,
-            y: 230,
+            y: 195,
             w: 340,
-            h: 50,
+            h: 42,
             text: "[2] LOAD MAP".to_string(),
         };
 
@@ -120,17 +120,24 @@ impl Menu {
         };
         let btn_audio = ButtonDef {
             x: 230,
-            y: 300,
+            y: 250,
             w: 340,
-            h: 50,
+            h: 42,
             text: audio_text.to_string(),
+        };
+        let btn_keys = ButtonDef{
+            x: 230,
+            y:305,
+            w:340,
+            h: 42,
+            text: "[4] KEY BINDINGS".to_string(),
         };
 
         let btn_quit = ButtonDef {
             x: 230,
-            y: 370,
+            y: 360,
             w: 340,
-            h: 50,
+            h: 40,
             text: "[ESC] QUIT GAME".to_string(),
         };
 
@@ -139,6 +146,11 @@ impl Menu {
             *game = Game::new_game(renderer_data).unwrap(); // ! this unwrap is intentionally accepted
             game.map_swap(renderer_data, 1); // Jump straight to map 1 (map 0 is reserved for testing)
             return AppState::Playing;
+        }
+
+         if self.draw_flat_button(buffer, &btn_keys, mx, my) && clicked || click4 {
+            audio.set_muted(!audio.is_muted);
+            return AppState::KeyBindingsMenu;
         }
 
         #[allow(clippy::collapsible_if)]
@@ -297,8 +309,33 @@ impl Menu {
         }
 
         AppState::GamePaused
+   
     }
 
+ pub fn update_and_draw_key_bindings(  
+        &mut self,
+        window: &mut Window,
+        buffer: &mut [u32],
+        key_bindings: &mut KeyBindings,
+    ) -> AppState {
+       // Clear the buffer from the previous frame
+        buffer.fill(COL_BG_MAIN);
+
+        // Render titles
+        Self::draw_text_centered(
+            buffer,
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT,
+            "DOOMSQUAD",
+            50,
+            4,
+            COL_TITLE_RED,
+        );
+
+                AppState::KeyBindingsMenu
+    }   
+
+    
     /// Fetches mouse coordinates and performs edge detection (debouncing) for left-clicks.
     fn get_mouse_state(&mut self, window: &Window) -> (usize, usize, bool) {
         // Clamp prevents out-of-bounds coordinates if the mouse leaves the window frame
