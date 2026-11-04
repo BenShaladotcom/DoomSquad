@@ -7,12 +7,12 @@ mod parser;
 mod render;
 
 use crate::audio::audio_handler::Audio;
+use crate::game::keybindings::{self, Action, KeyBindings};
 use crate::menu::menu_handler::{AppState, Menu};
 use crate::render::{RendererData, render_init};
 use minifb::{Key, KeyRepeat, Window, WindowOptions};
 use std::f64::consts::PI;
 use std::time::Instant;
-use crate::game::keybindings::{self, Action, KeyBindings};
 
 const SCREEN_WIDTH: usize = 800;
 const SCREEN_HEIGHT: usize = 450;
@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 } else if game.player.hp <= 0.0 {
                     app_state = AppState::GameOver;
                 } else {
-                    game.update(&window, &renderer_data, &mut audio, & key_bindings);
+                    game.update(&window, &renderer_data, &mut audio, &key_bindings);
                     render::draw_screen(&mut buffer, &renderer_data, &game);
 
                     frame_count += 1;
@@ -119,20 +119,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     );
                 }
             }
-AppState::KeyBindingsMenu => {
-     window.set_cursor_visibility(true);
+            AppState::KeyBindingsMenu => {
+                window.set_cursor_visibility(true);
 
-     if escape_clicked{
-        app_state = AppState::StartScreen;
-     } else {
-         app_state = menu.update_and_draw_key_bindings(
-            &mut window,
-            &mut buffer,
-            &mut key_bindings
-        );
-     }
-     }
-
+                if escape_clicked && !menu.is_waiting() {
+                    app_state = AppState::StartScreen;
+                } else {
+                    app_state = menu.update_and_draw_key_bindings(
+                        &mut window,
+                        &mut buffer,
+                        &mut key_bindings,
+                    );
+                }
+            }
 
             AppState::GameOver => {
                 window.set_cursor_visibility(true);

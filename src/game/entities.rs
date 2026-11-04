@@ -1,7 +1,6 @@
-use minifb::{ Window};
+use minifb::Window;
 
 use crate::audio::audio_handler::Audio;
-use crate::game::keybindings::{Action, KeyBindings};
 use crate::game::entities::EntityType::*;
 use crate::game::entity_behaviour::{
     archer_behaviour, dummy_behaviour, enemy_arrow_behaviour, enemy_bullet_behaviour,
@@ -9,6 +8,7 @@ use crate::game::entity_behaviour::{
     player_bullet_behaviour, ranged_enemy_behaviour, red_barrel_behaviour,
     summoner_enemy_behaviour, weak_enemy_behaviour,
 };
+use crate::game::keybindings::{Action, KeyBindings};
 
 use crate::game::map::{Map, Point};
 use crate::game::movement::Mover;
@@ -203,7 +203,7 @@ impl Entity {
     ) -> Vec<EntityEvent> {
         //collect all Spawn events for gamestate
         let mut events: Vec<EntityEvent> = Vec::new();
-        if window.is_key_pressed(key_bindings.key(Action::LockEnemies) , minifb::KeyRepeat::No) {
+        if window.is_key_pressed(key_bindings.key(Action::LockEnemies), minifb::KeyRepeat::No) {
             self.movement_locked = !self.movement_locked;
         }
 

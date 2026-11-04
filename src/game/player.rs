@@ -1,7 +1,7 @@
 use super::map::Map;
 use crate::game::generate_entities::generate_entities;
+use crate::game::keybindings::{Action, KeyBindings};
 use crate::game::player::LastInputDirection::*;
-use crate::game::keybindings::{ Action, KeyBindings};
 use crate::{
     SCREEN_HEIGHT,
     audio::audio_handler::Audio,
@@ -339,7 +339,10 @@ impl Player {
         }
 
         //slowdown movespeed if not sprinting and sliding anymore
-        if !window.is_key_down(key_bindings.key(Action::Sprint)) && !self.is_jumping && !self.is_sliding {
+        if !window.is_key_down(key_bindings.key(Action::Sprint))
+            && !self.is_jumping
+            && !self.is_sliding
+        {
             self.move_speed = MOVE_SPEED;
         }
 
@@ -371,7 +374,7 @@ impl Player {
             audio.play_sfx("slide", 1.0);
             self.move_speed += 5.0;
             self.is_sliding = true;
-            self.save_input(window,key_bindings);
+            self.save_input(window, key_bindings);
         }
 
         //during slide speed decreases
@@ -432,7 +435,9 @@ impl Player {
             }
 
             //rocketlauncher
-            if window.is_key_pressed(key_bindings.key(Action::RocketJump), KeyRepeat::No) && (self.rocketlauncher_cooldown == 0) {
+            if window.is_key_pressed(key_bindings.key(Action::RocketJump), KeyRepeat::No)
+                && (self.rocketlauncher_cooldown == 0)
+            {
                 audio.play_sfx("rocketlauncher", 1.0);
 
                 self.using_rocketlauncher = true;
@@ -444,7 +449,7 @@ impl Player {
                 self.rocketlauncher_cooldown = ROCKETLAUNCHER_COOLDOWN_TIME;
             }
 
-            self.save_input(window,key_bindings);
+            self.save_input(window, key_bindings);
         }
 
         //Rocketlauncher cooldwon

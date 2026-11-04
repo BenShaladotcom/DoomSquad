@@ -1,5 +1,5 @@
-use std::{fs, path::Path};
 use crate::game::keybindings::{self, Action, KeyBindings};
+use std::{fs, path::Path};
 
 use crate::{
     audio::audio_handler::Audio,
@@ -82,7 +82,13 @@ impl Game {
         }
     }
 
-    pub fn update(&mut self, window: &Window, renderer_data: &RendererData, audio: &mut Audio, key_bindings: &KeyBindings) {
+    pub fn update(
+        &mut self,
+        window: &Window,
+        renderer_data: &RendererData,
+        audio: &mut Audio,
+        key_bindings: &KeyBindings,
+    ) {
         //update all interactables and add possible spawn events
         let mut interactables = std::mem::take(&mut self.interactables);
         let mut interactables_spawns = Vec::new();
@@ -96,13 +102,22 @@ impl Game {
 
         let mut entity_spawns = Vec::new();
         //update player
-        let event = self.player.update(window, &self.map, renderer_data, audio, key_bindings);
+        let event = self
+            .player
+            .update(window, &self.map, renderer_data, audio, key_bindings);
         //add possible spawn events
         entity_spawns.extend(event);
 
         //update all entites and add possible spawn events
         for entity in &mut self.entities {
-            let event = entity.update(window, &self.map, &self.player.mover, renderer_data, audio, key_bindings);
+            let event = entity.update(
+                window,
+                &self.map,
+                &self.player.mover,
+                renderer_data,
+                audio,
+                key_bindings,
+            );
             entity_spawns.extend(event);
         }
 

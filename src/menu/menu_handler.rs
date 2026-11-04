@@ -59,7 +59,9 @@ impl Menu {
             waiting_for: None,
         }
     }
-
+        pub fn is_waiting(&self) -> bool {
+        self.waiting_for.is_some()
+    }
     /// Renders the main menu and handles user interactions.
     pub fn update_and_draw_start_menu(
         &mut self,
