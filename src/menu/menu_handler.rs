@@ -355,6 +355,7 @@ impl Menu {
             let keys = window.get_keys_pressed(KeyRepeat::No);
             if let Some(key) = keys.first() {
                 key_bindings.map.insert(action, *key);
+                key_bindings.save();
                 self.waiting_for = None;
             }
         }

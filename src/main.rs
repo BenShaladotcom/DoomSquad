@@ -56,7 +56,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         SURFACE_DEFAULT_COLOR,
     );
 
-    let mut key_bindings = KeyBindings::default_bindings();
+    let mut key_bindings = KeyBindings::load();
     let mut game = game::Game::new_game(&renderer_data).unwrap();
     let mut audio = Audio::init();
     let mut menu = Menu::new();
