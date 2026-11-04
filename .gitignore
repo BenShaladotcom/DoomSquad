@@ -2,3 +2,4 @@ target/
 .VSCodeCounter
 savegame.txt
 keybindings.txt
+changes.patch
